@@ -8,10 +8,11 @@ About page. Set `layout: about` in front matter.
     - name: me@example.com
       url: mailto:me@example.com
 
-The page body is the bio. Text and links on the left, the photos on the right,
-each whole at its own shape: one fills the column; several are split into rows
-like the homepage tiles (_partials/tile-rows.html: 2 → 2, 3 → 1 + 2, 4 → 2 + 2,
-5 → 2 + 3 …), each row filling the column at one height (stacked on phones).
+The page body is the bio: on the left, the links on the right. The photos are
+below, each whole at its own shape: one fills the width; several are split into
+rows like the homepage tiles (_partials/tile-rows.html: 2 → 2, 3 → 1 + 2,
+4 → 2 + 2, 5 → 2 + 3 …), each row filling the width at one height (stacked on
+phones).
 */ -}}
 {{ define "main" }}
 {{- $photos := slice }}
@@ -21,7 +22,7 @@ like the homepage tiles (_partials/tile-rows.html: 2 → 2, 3 → 1 + 2, 4 → 2
   {{- end }}
 {{- else }}
   {{- $used := partial "content-images.html" . }}
-  {{- range (.Resources.ByType "image").ByName }}
+  {{- range sort (.Resources.ByType "image") "Name" }}{{/* sort: also fine with no images */}}
     {{- if not (in $used .Name) }}{{ $photos = $photos | append . }}{{ end }}
   {{- end }}
 {{- end }}
@@ -65,7 +66,7 @@ like the homepage tiles (_partials/tile-rows.html: 2 → 2, 3 → 1 + 2, 4 → 2
         {{- partial "img.html" (dict
           "img" $img
           "widths" (slice 800 1200 1600 2400)
-          "sizes" (printf "(max-width: 600px) 100vw, (max-width: 860px) %dvw, %dvw" (math.Ceil (mul 100 (div $r $rowSum)) | int) (math.Ceil (mul 70 (div $r $rowSum)) | int))
+          "sizes" (printf "(max-width: 600px) 100vw, %dvw" (math.Ceil (mul 100 (div $r $rowSum)) | int))
           "alt" (cond (eq $i 0) $.Title "")
           "eager" (lt $i 2)
         ) }}

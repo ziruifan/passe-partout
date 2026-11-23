@@ -615,26 +615,22 @@ p > .md-figure:only-child { margin: 0; }   /* an image on its own line: the para
 
 /* ---------- About ---------- */
 
-/* Text on the left, lined up with the page edge; photos in the rest of the width
-   on the right, each whole at its own shape (--r). Several photos are split into
-   rows like the homepage tiles (layouts/about.html); each row fills the column,
-   widths in proportion to the shapes so the heights match (one photo takes the
-   whole width). Narrow screens: text first, then the photos; phones stack them. */
-.about {
-  display: grid;
-  grid-template-columns: clamp(300px, 28vw, 520px) minmax(0, 1fr);
-  align-items: start;
-  gap: 40px clamp(40px, 4vw, 96px);
-}
+/* The bio at a comfortable reading width on the left, lined up with the page edge;
+   the links in a column on the right, against the other page edge, their first
+   line level with the bio's. Narrow screens: links under the bio.
+   The photos below, across the page, each whole at its own shape (--r). Several
+   are split into rows like the homepage tiles (layouts/about.html); each row fills
+   the width, widths in proportion to the shapes so the heights match. Phones
+   stack them. */
+.about { display: flex; flex-direction: column; gap: 40px; padding-top: 40px; }
 .about-body {
-  position: sticky;
-  top: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 40rem) auto;
+  justify-content: space-between;
+  align-items: start;
+  column-gap: 40px;
 }
-.about-photos { display: flex; flex-direction: column; gap: var(--gap); min-width: 0; }
+.about-photos { display: flex; flex-direction: column; gap: var(--gap); }
 .about-row { display: flex; gap: var(--gap); }
 .about-photo { flex: var(--r) 1 0; min-width: 0; margin: 0; background: var(--tint); }
 .about-photo img { width: 100%; height: auto; transition: opacity 0.35s ease; }
@@ -645,13 +641,14 @@ p > .md-figure:only-child { margin: 0; }   /* an image on its own line: the para
 .bio a { color: inherit; text-decoration: underline; text-decoration-color: var(--outline); text-underline-offset: 3px; }
 .bio a:hover { text-decoration-color: currentColor; }
 
-.links { display: flex; flex-wrap: wrap; gap: 4px 28px; font-size: 0.8rem; }
-.links a { padding: 10px 0; }
+.links { display: flex; flex-direction: column; align-items: flex-end; gap: 4px 28px; font-size: 0.8rem; }
+.links a { padding: 4px 0; }
 .links a:first-child { color: var(--fg); }
 
 @media (max-width: 860px) {
-  .about { grid-template-columns: minmax(0, 1fr); }
-  .about-body { position: static; }
+  .about-body { display: flex; flex-direction: column; gap: 24px; }
+  .links { flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .links a { padding: 10px 0; }
 }
 @media (max-width: 600px) {
   .about { padding-top: 24px; }   /* room between the wrapped navigation and the text */
